@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conways Game of Life - CrispyPin.com</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="visual" id="game-of-life">
+        <canvas></canvas>
+        <div class="controlbar">
+            <button type="button" onclick="toggle()" id="play-button">PLAY</button>
+            <button type="button" onclick="speedUp()">&gt;&gt;</button>
+            <button type="button" onclick="slowDown()">&lt;&lt;</button>
+            <button type="button" onclick="randomise()">randomise</button>
+        </div>
+    </div>
+    <script src="game-of-life.js"></script>
+</body>
+</html>
