@@ -5,6 +5,7 @@ let canvas = app.getElementsByTagName("canvas")[0];
 let ctx = canvas.getContext("2d");
 
 let playBtn = document.getElementById("play-button");
+let stepBtn = document.getElementById("step-button");
 
 //neighbor positions
 const nx = [-1, 0, 1, -1, 1, -1, 0, 1];
@@ -71,6 +72,8 @@ function step() {
     }
     
     world = newWorld;
+    
+    render();
 }
 
 function newState(state, neighbors) {
@@ -88,7 +91,7 @@ function render() {
     for (let y = 0; y < worldHeight; y++) {
         for (let x = 0; x < worldWidth; x++) {
             if (world[y][x]) {
-                ctx.fillRect(x*cellSize, y*cellSize, cellSize-1, cellSize-1)
+                ctx.fillRect(x * cellSize, y * cellSize, cellSize - 1, cellSize - 1)
             }
         }
     }
@@ -99,7 +102,6 @@ function run() {
     if (sinceStep >= timeStep) {
         sinceStep = 0;
         step();
-        render();
     }
     if (running) {
         window.requestAnimationFrame(run);
@@ -122,6 +124,7 @@ function drawStart(event) {
 }
 
 function drawCells(event) {
+    //called when mouse moves
     if (drawMode == -1) {
         return;
     }
@@ -140,7 +143,9 @@ function drawEnd(event) {
 }
 
 function keyPress(event) {
-
+    if (event.code == "Space") {
+        toggleRunning();
+    }
 }
 
 
@@ -148,9 +153,11 @@ function toggleRunning() {
     running = !running;
     if (running) {
         playBtn.textContent = "PAUSE";
+        stepBtn.hidden = true;
         run();
     } else {
         playBtn.textContent = "PLAY";
+        stepBtn.hidden = false;
     }
 }
 
@@ -179,7 +186,8 @@ function clearWorld() {
 canvas.addEventListener("mousedown", drawStart);
 canvas.addEventListener("mouseup", drawEnd);
 canvas.addEventListener("mousemove", drawCells);
-canvas.addEventListener("keypress", keyPress);
+document.addEventListener("keypress", keyPress);
+
 
 canvas.addEventListener("contextmenu", function(e) {
     if (e.button == 2) {
