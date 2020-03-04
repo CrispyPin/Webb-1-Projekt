@@ -2,8 +2,6 @@
 
 let app = document.getElementById("game-of-life");
 let canvas = app.getElementsByTagName("canvas")[0];
-canvas.width = 512;
-canvas.height = 512;
 let ctx = canvas.getContext("2d");
 
 let playBtn = document.getElementById("play-button");
@@ -16,6 +14,13 @@ let worldWidth = 32;
 let worldHeight = 32;
 let world = matrix(worldWidth, worldHeight, "r");
 let running = false;
+
+let drawMode = -1;
+
+let cellSize = 24;
+
+canvas.width = worldWidth * cellSize;
+canvas.height = worldHeight * cellSize;
 
 let timeStep = 15;//frames per step
 let sinceStep = 0;
@@ -46,11 +51,11 @@ function step() {
     for (let y = 0; y < worldHeight; y++) {
         for (let x = 0; x < worldWidth; x++) {
             if (world[y][x]) {
-                //add to neighbor count of all surrounding tiles
+                //add to neighbor count of all surrounding cells
                 for (let pos = 0; pos < 8; pos++) {
                     let xp = x+nx[pos];
                     let yp = y+ny[pos];
-                    if (xp < worldWidth && xp > 0 && yp < worldHeight && yp > 0) {
+                    if (xp < worldWidth && xp >= 0 && yp < worldHeight && yp >= 0) {
                         neighbors[yp][xp]++;
                     }
                 }
@@ -83,7 +88,7 @@ function render() {
     for (let y = 0; y < worldHeight; y++) {
         for (let x = 0; x < worldWidth; x++) {
             if (world[y][x]) {
-                ctx.fillRect(x*16, y*16, 16, 16)
+                ctx.fillRect(x*cellSize, y*cellSize, cellSize-1, cellSize-1)
             }
         }
     }
@@ -101,12 +106,45 @@ function run() {
     }
 }
 
-function clickCell(event) {
-    console.log(event.clientX, event.clientY);
+function drawStart(event) {
+    let y = event.clientY - canvas.getBoundingClientRect().top;
+    let x = event.clientX - canvas.getBoundingClientRect().left;
     
+    let cellx = Math.floor(x / cellSize);
+    let celly = Math.floor(y / cellSize);
+
+    drawMode = 1;
+    if (world[celly][cellx] || event.button == 2) {
+        drawMode = 0;
+    }
+
+    drawCells(event);
 }
 
-function toggle() {
+function drawCells(event) {
+    if (drawMode == -1) {
+        return;
+    }
+    let y = event.clientY - canvas.getBoundingClientRect().top;
+    let x = event.clientX - canvas.getBoundingClientRect().left;
+    
+    let cellx = Math.floor(x / cellSize);
+    let celly = Math.floor(y / cellSize);
+    
+    world[celly][cellx] = drawMode == 1;
+    render();
+}
+
+function drawEnd(event) {
+    drawMode = -1;
+}
+
+function keyPress(event) {
+
+}
+
+
+function toggleRunning() {
     running = !running;
     if (running) {
         playBtn.textContent = "PAUSE";
@@ -128,11 +166,25 @@ function slowDown() {
     }
 }
 
-function randomise() {
+function randomizeWorld() {
     world = matrix(worldWidth, worldHeight, "r");
     render();
 }
 
-canvas.addEventListener("mousedown", clickCell);
+function clearWorld() {
+    world = matrix(worldWidth, worldHeight);
+    render();
+}
+
+canvas.addEventListener("mousedown", drawStart);
+canvas.addEventListener("mouseup", drawEnd);
+canvas.addEventListener("mousemove", drawCells);
+canvas.addEventListener("keypress", keyPress);
+
+canvas.addEventListener("contextmenu", function(e) {
+    if (e.button == 2) {
+        e.preventDefault();
+    }
+})
 
 render();
