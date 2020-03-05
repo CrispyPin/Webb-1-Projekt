@@ -153,11 +153,11 @@ function keyPress(event) {
 function toggleRunning() {
     running = !running;
     if (running) {
-        playBtn.textContent = "PAUSE";
+        playBtn.textContent = "Pause [Space]";
         stepBtn.hidden = true;
         run();
     } else {
-        playBtn.textContent = "PLAY";
+        playBtn.textContent = "Play [Space]";
         stepBtn.hidden = false;
     }
 }

@@ -45,8 +45,11 @@ class Agent {
         circle(this.posx, this.posy, 10, this.genes);
 
         this.age++;
-        this.posx += Math.cos(this.direction);
-        this.posy += Math.sin(this.direction);
+        this.posx += Math.cos(this.direction) + canvas.width;
+        this.posy += Math.sin(this.direction) + canvas.height;
+
+        this.posx %= canvas.width;
+        this.posy %= canvas.height;
     }
 }
 
