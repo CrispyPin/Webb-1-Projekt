@@ -7,17 +7,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="visual" id="game-of-life">
-        <canvas></canvas>
-        <div class="controlbar">
-            <button type="button" onclick="toggleRunning()" id="play-button">PLAY</button>
-            <button type="button" onclick="step()" id="step-button">Step</button>
-            <button type="button" onclick="speedUp()">&gt;&gt;</button>
-            <button type="button" onclick="slowDown()">&lt;&lt;</button>
-            <button type="button" onclick="clearWorld()">clear</button>
-            <button type="button" onclick="randomizeWorld()">randomize</button>
+    <header>
+        <a href="index.html" id="logo"><img src="logo.png" alt=""></a>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Hoam</a></li>
+            <li><a href="genetic-algorithm.html">Genetic Algorithm</a></li>
+            <li><a href="game-of-life.html">Conways Game of Life</a></li>
+            <li><a href="fractal.html">Fractals</a></li>
+            <li><a href="https://crispypin.itch.io/">Games</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Game of Life</h1>
+        <p>Cellular Automata, blablabla</p>
+        <div class="visual" id="game-of-life">
+            <canvas></canvas>
+            <div class="controlbar">
+                <button type="button" onclick="toggleRunning()" id="play-button">PLAY</button>
+                <button type="button" onclick="step()" id="step-button">Step</button>
+                <button type="button" onclick="speedUp()">&gt;&gt;</button>
+                <button type="button" onclick="slowDown()">&lt;&lt;</button>
+                <button type="button" onclick="clearWorld()">clear</button>
+                <button type="button" onclick="randomizeWorld()">randomize</button>
+            </div>
         </div>
-    </div>
-    <script src="game-of-life.js"></script>
+        <script src="game-of-life.js"></script>
+    </main>
+    <footer>Chicken chicken chicken chicken, chicken chicken chicken.</footer>
 </body>
 </html>

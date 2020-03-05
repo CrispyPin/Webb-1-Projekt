@@ -18,7 +18,7 @@ let running = false;
 
 let drawMode = -1;
 
-let cellSize = 24;
+let cellSize = 16;
 
 canvas.width = worldWidth * cellSize;
 canvas.height = worldHeight * cellSize;

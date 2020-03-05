@@ -18,19 +18,28 @@ nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    display: grid;
+}
+
+nav ul li {
+    display: inline;
+    background-color: #4a4;
+    padding: 9px;
+}
+
+nav ul li:hover {
+    background-color: #4af;
 }
 
 nav ul li a {
-    background-color: #4a4;
+    font-size: 24px;
     color: #000;
     text-decoration: none;
-    display: block;
+    display: inline-block;
 }
 
 header {
     grid-column: 1 / -1;
-    background-color: #666;
+    background-color: #111;
     padding: 0;
 }
 
