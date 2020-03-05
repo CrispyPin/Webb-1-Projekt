@@ -6,24 +6,30 @@ body {
     display: grid;
     grid-template-rows: 50px auto 1fr auto;
 
-    /*grid-template-columns: repeat(auto-fill, minmax(100px, auto));*/
-
+    grid-template-columns: 20px 1fr 20px;
+    
     margin: 0;
     min-height: 100vh;
 
 }
 
+nav {
+    grid-column: 1 / -1;
+}
+
 nav ul {
-    
     list-style-type: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    padding: 0 20px;
+    grid-gap: 5px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, auto));
 }
 
 nav ul li {
-    display: inline;
     background-color: #4a4;
-    padding: 9px;
+    padding: 8px;
 }
 
 nav ul li:hover {
@@ -34,7 +40,8 @@ nav ul li a {
     font-size: 24px;
     color: #000;
     text-decoration: none;
-    display: inline-block;
+    display: block;
+    text-align: center;
 }
 
 header {
@@ -50,13 +57,32 @@ header h1 {
 
 footer {
     grid-column: 1 / -1;
+    margin: 25px;
 }
 
 main {
-    grid-column: 1 / -1;
+    padding: 0 20px;
+    grid-column: 2 / -2;
     background-color: #333;
 }
 
 .visual {
     margin: 20px;
+    width: min-content;
+    background-color: #000;
+}
+
+.scrollback {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #4af;
+    background-image: url("uparrow.png");
+}
+
+.scrollback:hover {
+    background-color: #4a4;
 }

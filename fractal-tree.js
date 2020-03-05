@@ -43,8 +43,7 @@ function tree(x, y, length, i, angle) {
 }
 
 function render() {
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     tree(256, canvas.height-64, 128, iterations, Math.PI/2 - globalAngle);
 }
 

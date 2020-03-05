@@ -85,8 +85,7 @@ function newState(state, neighbors) {
 }
 
 function render() {
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#0bb";
     for (let y = 0; y < worldHeight; y++) {
         for (let x = 0; x < worldWidth; x++) {
@@ -145,6 +144,8 @@ function drawEnd(event) {
 function keyPress(event) {
     if (event.code == "Space") {
         toggleRunning();
+    } else if (event.code == "KeyS" && !running) {
+        step();
     }
 }
 
