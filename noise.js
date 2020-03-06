@@ -1,51 +1,48 @@
 'use strict'
 
-let cellapp = document.getElementById("cell-noise");
-let cellcanvas = cellapp.getElementsByTagName("canvas")[0];
-cellcanvas.width = 512;
-cellcanvas.height = 512;
-let cellctx = cellcanvas.getContext("2d");
 
-let points = [];
+class WorleyNoise {
+    constructor(width, height, n) {
+        this.app = document.getElementById("worley-noise");
+        this.canvas = this.app.getElementsByTagName("canvas")[0];
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.ctx = this.canvas.getContext("2d");
 
-for (let i = 0; i < 32; i++) {
-    let x = Math.floor(Math.random() * cellcanvas.width);
-    let y = Math.floor(Math.random() * cellcanvas.height);
-    points.push({x:x, y:y});
-}
-
-function gradient(x, y) {
-    let mindist = 999999;
-    let mini = -1;
-    for (let p = 0; p < points.length; p++) {//find closest point
-        const point = points[p];
-        let dist = (point.x-x)**2 + (point.y-y)**2;
-        if (dist < mindist) {
-            mindist = dist;
-            mini = p;
+        this.generatePoints(n);
+        this.render();
+    }
+    
+    generatePoints(n) {
+        this.points = [];
+        for (let i = 0; i < n; i++) {
+            let x = Math.floor(Math.random() * this.canvas.width);
+            let y = Math.floor(Math.random() * this.canvas.height);
+            this.points.push({x:x, y:y});
         }
     }
-    return mindist; 
-}
 
-function render() {
-    for (let y = 0; y < cellcanvas.height; y++) {
-        for (let x = 0; x < cellcanvas.width; x++) {
-            let val = gradient(x, y)/50;
-            cellctx.fillStyle = "rgb(0,"+val+","+val+")";
-            cellctx.fillRect(x, y, 1, 1);
+    render() {
+        for (let y = 0; y < this.canvas.height; y++) {
+            for (let x = 0; x < this.canvas.width; x++) {
+                let val = this.gradient(x, y)/50;
+                this.ctx.fillStyle = "rgb(0,"+val+","+val+")";
+                this.ctx.fillRect(x, y, 1, 1);
+            }
         }
+    }
+    
+    gradient(x, y) {
+        let mindist = 999999;
+        for (let p = 0; p < this.points.length; p++) {//find closest point
+            let point = this.points[p];
+            let dist = (point.x-x)**2 + (point.y-y)**2;
+            if (dist < mindist) {
+                mindist = dist;
+            }
+        }
+        return mindist; 
     }
 }
 
-function mouseMove(event) {
-    points.pop();
-    let x = event.clientX - cellcanvas.getBoundingClientRect().left;
-    let y = event.clientY - cellcanvas.getBoundingClientRect().top;
-    points.push({x:x, y:y});
-    render();
-}
-
-render();
-
-cellcanvas.addEventListener("mousemove", mouseMove);
+let worleyNoise = new WorleyNoise(512, 512, 32);

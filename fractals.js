@@ -64,5 +64,4 @@ class FractalTree {
     }
 }
 
-
 let fractalTree = new FractalTree(12, 0.75);
