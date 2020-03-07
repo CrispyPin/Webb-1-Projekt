@@ -14,11 +14,10 @@ class FractalTree {
         
         this.palette = [
             "#440",
+            "#440",
             "#480",
             "#4a0",
             "#0c0",
-            "#0e4",
-            "#0f4",
         ];
         
         this.render();
@@ -61,6 +60,12 @@ class FractalTree {
     
     setIter(i) {
         this.iterations = i;
+        this.render();
+    }
+    
+    setMod(m) {
+        this.mod = m;
+        this.render();
     }
 }
 
