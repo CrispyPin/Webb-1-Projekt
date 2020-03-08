@@ -139,14 +139,15 @@ class Multibrot extends Mandelbrot {
     constructor(id, power, iter=255, width=512, height=512, minX=-2, minY=-1.5, maxX=1, maxY=1.5) {
         super(id, iter, width, height, minX, minY, maxX, maxY);
         this.power = power;
+        this.palette = [48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248];
     }
 
     render() {
-        //let result = [];
+        let result = this.ctx.getImageData(0,0, this.canvas.width, this.canvas.height);
         let n = this.power;
         let start = new Date();
+        let px = 0;
         for (let yPos = 0; yPos < this.canvas.height; yPos++) {
-            //let row = [];
             for (let xPos = 0; xPos < this.canvas.width; xPos++) {
                 let x0 = this.reScaleX(xPos)
                 let y0 = this.reScaleY(yPos);
@@ -162,24 +163,25 @@ class Multibrot extends Mandelbrot {
                     i++;
                 }
                 if (i == this.maxIter) {
-                    this.ctx.fillStyle = "#000";
-                    //row.push("#000");
+                    //this.ctx.fillStyle = "#000";
+                    
                 } else {
-                    this.ctx.fillStyle = this.palette[Math.min(i, this.palette.length-1)];
-                    //row.push(this.palette[Math.min(i, this.palette.length-1)]);
+                    //this.ctx.fillStyle = this.palette[Math.min(i, this.palette.length-1)];
+                    result.data[px+1] = this.palette[Math.min(i, this.palette.length-1)];
+                    result.data[px+2] = this.palette[Math.min(i, this.palette.length-1)];
+                    result.data[px+3] = 255;
                 }
-                this.ctx.fillRect(xPos, yPos, 1, 1);
+                //this.ctx.fillRect(xPos, yPos, 1, 1);
+                px += 4;
             }
-            //result.push(row);
         }
-        //this.ctx.putImageData(new ImageData(result, this.canvas.width, this.canvas.height));
-        //this.ctx.drawImage();
+        this.ctx.putImageData(result, 0, 0);
         console.log(new Date() - start);
     }
 }
 
 let fractalTree = new FractalTree("fractal-tree", 12, 0.75);
 let mandelbrot = new Mandelbrot("mandelbrot");
-let multibrot = new Multibrot("multibrot", 2);
-//mandelbrot.render();
+let multibrot = new Multibrot("multibrot", 4);
+mandelbrot.render();
 //multibrot.render();
