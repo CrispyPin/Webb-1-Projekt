@@ -72,6 +72,35 @@ main {
     background-color: #000;
 }
 
+.controlbar {
+    background-color: #222;
+    padding: 2px 5px;
+    display: grid;
+
+    grid-template-columns: repeat(8, auto);
+    grid-gap: 4px;
+}
+
+.controlbar button, .controlbar input{
+    background-color: #6d6;
+    padding: 4px 6px;
+    border: 0;
+}
+
+.controlbar button:hover, .controlbar input:hover {
+    background-color: #8ff;
+}
+
+.controlbar button:active {
+    background-color: #05f;
+}
+
+.controlbar button:disabled {
+    background-color: #8b8;
+    color: #000;
+}
+
+
 .scrollback {
     position: fixed;
     right: 20px;

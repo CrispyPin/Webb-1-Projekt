@@ -6,7 +6,7 @@ const ny = [-1, -1, -1, 0, 0, 1, 1, 1];
 
 
 class GameOfLife {
-    constructor(id, width, height, cellSize) {
+    constructor(id, width, height, cellSize, rule=[2, 3, 3, 3]) {
         this.app = document.getElementById(id);
         this.canvas = this.app.getElementsByTagName("canvas")[0];
         this.ctx = this.canvas.getContext("2d");
@@ -14,16 +14,16 @@ class GameOfLife {
         this.canvas.width = width * cellSize;
         this.canvas.height = height * cellSize;
         
-        this.playBtn = this.app.getElementsByClassName("play-button");
-        this.stepBtn = this.app.getElementsByClassName("step-button");
+        this.playBtn = this.app.getElementsByClassName("play-button")[0];
+        this.stepBtn = this.app.getElementsByClassName("step-button")[0];
 
-        //this.toggleRunning = this.toggleRunning.bind(this);
         this.run = this.run.bind(this);
         
         this.worldWidth = width;
         this.worldHeight = height;
-        this.world = matrix(width, height, "r");
+        this.world = matrix(width, height);
         this.cellSize = cellSize;
+        this.rule = rule;
         
         this.running = false;
         this.drawMode = -1;
@@ -34,7 +34,6 @@ class GameOfLife {
         this.canvas.addEventListener("mousedown", this.drawStart.bind(this));
         this.canvas.addEventListener("mouseup", this.drawEnd.bind(this));
         this.canvas.addEventListener("mousemove", this.drawCells.bind(this));
-        //document.addEventListener("keypress", keyPress);
         
         
         this.canvas.addEventListener("contextmenu", function(e) {
@@ -80,15 +79,15 @@ class GameOfLife {
     
     newState(state, neighbors) {
         if (state) {
-            return (neighbors > 1 && neighbors < 4);
+            return (neighbors >= this.rule[0] && neighbors <= this.rule[1]);
         } else {
-            return neighbors == 3;
+            return (neighbors >= this.rule[2] && neighbors <= this.rule[3]);;
         }
     }
     
     render() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.fillStyle = "#0bb";
+        this.ctx.fillStyle = "#db3";
         for (let y = 0; y < this.worldHeight; y++) {
             for (let x = 0; x < this.worldWidth; x++) {
                 if (this.world[y][x]) {
@@ -146,12 +145,12 @@ class GameOfLife {
     toggleRunning() {
         this.running = !this.running;
         if (this.running) {
-            this.playBtn.textContent = "Pause [Space]";
-            this.stepBtn.hidden = true;
+            this.playBtn.textContent = "Pause";
+            this.stepBtn.disabled = true;
             this.run();
         } else {
-            this.playBtn.textContent = "Play [Space]";
-            this.stepBtn.hidden = false;
+            this.playBtn.textContent = "Play";
+            this.stepBtn.disabled = false;
         }
     }
     
@@ -176,6 +175,19 @@ class GameOfLife {
         this.world = matrix(this.worldWidth, this.worldHeight);
         this.render();
     }
+
+    setMinA(x) {
+        this.rule[0] = x;
+    }
+    setMaxA(x) {
+        this.rule[1] = x;
+    }
+    setMinD(x) {
+        this.rule[2] = x;
+    }
+    setMaxD(x) {
+        this.rule[3] = x;
+    }
 }
 
 
@@ -197,14 +209,5 @@ function matrix(width, height, fill=false, weight=0.3) {
 }
 
 
-function keyPress(event) {
-    if (event.code == "Space") {
-        toggleRunning();
-    } else if (event.code == "KeyS" && !running) {
-        step();
-    }
-}
-
-
-
 let gameOfLife = new GameOfLife("game-of-life", 32, 32, 16);
+let gameOfLifeAdvanced = new GameOfLife("game-of-life-advanced", 32, 32, 16);

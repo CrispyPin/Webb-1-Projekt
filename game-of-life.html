@@ -26,12 +26,27 @@
         <div class="visual" id="game-of-life">
             <canvas></canvas>
             <div class="controlbar">
-                <button type="button" onclick="gameOfLife.toggleRunning()" class="play-button">Play [Space]</button>
-                <button type="button" onclick="gameOfLife.step()" class="step-button">Step [S]</button>
+                <button type="button" onclick="gameOfLife.toggleRunning()" class="play-button">Play</button>
+                <button type="button" onclick="gameOfLife.step()" class="step-button">Step</button>
                 <button type="button" onclick="gameOfLife.slowDown()">&lt;&lt;</button>
                 <button type="button" onclick="gameOfLife.speedUp()">&gt;&gt;</button>
                 <button type="button" onclick="gameOfLife.clearWorld()">clear</button>
                 <button type="button" onclick="gameOfLife.randomizeWorld()">randomize</button>
+            </div>
+        </div>
+        <div class="visual" id="game-of-life-advanced">
+            <canvas></canvas>
+            <div class="controlbar">
+                <button type="button" onclick="gameOfLifeAdvanced.toggleRunning()" class="play-button">Play</button>
+                <button type="button" onclick="gameOfLifeAdvanced.step()" class="step-button">Step</button>
+                <button type="button" onclick="gameOfLifeAdvanced.slowDown()">&lt;&lt;</button>
+                <button type="button" onclick="gameOfLifeAdvanced.speedUp()">&gt;&gt;</button>
+                <button type="button" onclick="gameOfLifeAdvanced.clearWorld()">clear</button>
+                <button type="button" onclick="gameOfLifeAdvanced.randomizeWorld()">randomize</button>
+                <input type="number" min=0 max=8 value=2 onchange="gameOfLifeAdvanced.setMinA(value)">
+                <input type="number" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMaxA(value)">
+                <input type="number" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMinD(value)">
+                <input type="number" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMaxD(value)">
             </div>
         </div>
         <script src="game-of-life.js"></script>
