@@ -25,6 +25,12 @@
         <p>Noise is cool</p>
         <div class="visual" id="worley-noise">
             <canvas></canvas>
+            <div class="controlbar">
+                <button type="button" onclick="worleyNoise.generatePoints();worleyNoise.render()">Render</button>
+            </div>
+        </div>
+        <div class="visual" id="worley-noise-fractal">
+            <canvas></canvas>
         </div>
         <script src="noise.js"></script>
     </main>

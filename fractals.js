@@ -14,6 +14,8 @@ class FractalTree {
         this.iterations = iterations;
         this.mod = mod;
         this.angle = Math.PI*0.375;
+
+        this.update = true;
         
         this.palette = [
             "#430",
@@ -27,6 +29,7 @@ class FractalTree {
         
         this.render();
         this.canvas.addEventListener("mousemove", this.mouseMove.bind(this));
+        this.canvas.addEventListener("mousedown", this.click.bind(this));
     }
     
     static vector(l, angle) {
@@ -58,9 +61,20 @@ class FractalTree {
     }
     
     mouseMove(event) {
-        let x = event.clientX - this.canvas.getBoundingClientRect().left;
-        this.angle = x * Math.PI / this.canvas.width;
-        this.render();
+        if (this.update) {
+            let x = event.clientX - this.canvas.getBoundingClientRect().left;
+            this.angle = x * Math.PI / this.canvas.width;
+            this.render();
+        }
+    }
+
+    click(event) {
+        this.update = !this.update;
+        if (this.update) {
+            let x = event.clientX - this.canvas.getBoundingClientRect().left;
+            this.angle = x * Math.PI / this.canvas.width;
+            this.render();
+        }
     }
     
     setIter(i) {
@@ -161,8 +175,6 @@ class Mandelbrot {
             result.push(row);
             map.push(row);
         }
-        console.log(map);
-        
         // adjust iterations of regions based on neighbors
         for (let y = 0; y < result.length; y++) {
             for (let x = 0; x < result[0].length; x++) {
@@ -192,11 +204,9 @@ class Mandelbrot {
         let start = new Date();
         let result = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
         let map = this.preRender();
-        console.log(map);
         
         let px = 0;
         for (let yPos = 0; yPos < this.canvas.height; yPos++) {
-            console.log(yPos);
             for (let xPos = 0; xPos < this.canvas.width; xPos++) {
                 
                 this.iter = map[Math.floor(yPos/16)][Math.floor(xPos/16)];
@@ -243,4 +253,4 @@ class Multibrot extends Mandelbrot {
 let fractalTree = new FractalTree("fractal-tree", 12, 0.75);
 let mandelbrot = new Mandelbrot("mandelbrot");
 let multibrot = new Multibrot("multibrot", 4);
-//mandelbrot.render();
+mandelbrot.render();
