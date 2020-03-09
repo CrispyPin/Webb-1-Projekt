@@ -9,6 +9,7 @@ Projektet i webbutveckling 1
     * perlin, fractal perlin
 ## Game of life
     * interactive demo
+    * change rules
     * load examples
     * gifs of complex structures
 ## Fractals
@@ -18,5 +19,16 @@ Projektet i webbutveckling 1
     * julia renderer
 ## Evolution
     * genetic simulation
-
-
+    * genes:
+        colour
+        speed
+        sight range
+        food / mate priority
+        child care (affecting energy cost)
+    * AI states:
+        looking for food
+        going to food
+        looking for partner
+        going to partner
+    * variables:
+        energy

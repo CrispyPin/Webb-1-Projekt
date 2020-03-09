@@ -1,14 +1,34 @@
 'use strict'
 
-let app = document.getElementById("evolution");
-let canvas = document.createElement("canvas");
-app.appendChild(canvas);
-let ctx = canvas.getContext("2d");
-
-
-let agents = [];
-let population = 32;
-
+class Evolution {
+    constructor(id, width=512, height=512, population=32) {
+        this.app = document.getElementById(id);
+        this.canvas = document.getElementsByTagName("canvas")[0];
+        this.canvas.width = width;
+        this.canvas.height = height;
+        this.ctx = canvas.getContext("2d");
+        
+        this.init(population);
+    }
+    
+    update() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < agents.length; i++) {
+            const agent = agents[i];
+            agent.render();
+            agent.update();
+        }
+        window.requestAnimationFrame(this.update);
+    }
+    
+    init(population) {
+        this.population = population;
+        this.agents = [];
+        for (let i = 0; i < population; i++) {
+            agents.push(new Agent(generateGenes()));
+        }
+    }
+}
 
 
 function circle(x, y, radius, colour) {
@@ -22,12 +42,11 @@ function circle(x, y, radius, colour) {
 }
 
 function generateGenes() {
-    let genes = "#"
+    let genes = {}
+    genes.colour = "#"
     for (let i = 0; i < 6; i++) {
-        genes += Math.floor(Math.random()*16).toString(16);
+        genes.colour += Math.floor(Math.random()*16).toString(16);
     }
-    
-    console.log(genes);
     
     return genes;
 }
@@ -35,16 +54,16 @@ function generateGenes() {
 class Agent {
     constructor(genes) {
         this.genes = genes;
-        this.age = 0;
         this.direction = Math.random() * Math.PI * 2;
         this.posx = Math.floor(Math.random() * canvas.width);
         this.posy = Math.floor(Math.random() * canvas.height);
     }
 
-    update() {
-        circle(this.posx, this.posy, 10, this.genes);
+    render() {
+        circle(this.posx, this.posy, 10, this.genes.colour);
+    }
 
-        this.age++;
+    update() {
         this.posx += Math.cos(this.direction) + canvas.width;
         this.posy += Math.sin(this.direction) + canvas.height;
 
@@ -53,20 +72,6 @@ class Agent {
     }
 }
 
-function main() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (let i = 0; i < agents.length; i++) {
-        const agent = agents[i];
-        agent.update();
-    }
-    window.requestAnimationFrame(main);
-}
+let evolution = new Evolution("evolution", 512, 512);
 
-function init() {
-    for (let i = 0; i < population; i++) {
-        agents.push(new Agent(generateGenes()));
-    }
-}
-
-init();
-main();
+evolution.update();

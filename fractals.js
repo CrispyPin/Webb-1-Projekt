@@ -13,19 +13,11 @@ class FractalTree {
         
         this.iterations = iterations;
         this.mod = mod;
-        this.angle = Math.PI*0.375;
+        this.angle = Math.PI * 0.2;
 
         this.update = true;
         
-        this.palette = [
-            "#430",
-            "#440",
-            "#450",
-            "#460",
-            "#470",
-            "#480",
-            "#080"
-        ];
+        this.palette = ["#430", "#440", "#450", "#460", "#470", "#480", "#080"];
         
         this.render();
         this.canvas.addEventListener("mousemove", this.mouseMove.bind(this));
@@ -46,7 +38,7 @@ class FractalTree {
         
         this.ctx.beginPath();
         this.ctx.moveTo(x, y);
-        this.ctx.lineWidth = i;//Math.min(i, 3);
+        this.ctx.lineWidth = i;
         this.ctx.strokeStyle = this.palette[this.iterations-i];
         this.ctx.lineTo(x + dir.x, y - dir.y);
         this.ctx.stroke();

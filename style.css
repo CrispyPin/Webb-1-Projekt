@@ -97,6 +97,7 @@ main {
 
 .controlbar button:disabled {
     background-color: #8b8;
+    text-decoration: line-through;
     color: #000;
 }
 
