@@ -25,10 +25,5 @@ Projektet i webbutveckling 1
         sight range
         food / mate priority
         child care (affecting energy cost)
-    * AI states:
-        looking for food
-        going to food
-        looking for partner
-        going to partner
     * variables:
         energy

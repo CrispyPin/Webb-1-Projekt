@@ -19,7 +19,6 @@ class FractalTree {
         
         this.palette = ["#430", "#440", "#450", "#460", "#470", "#480", "#080"];
         
-        this.render();
         this.canvas.addEventListener("mousemove", this.mouseMove.bind(this));
         this.canvas.addEventListener("mousedown", this.click.bind(this));
     }
@@ -117,7 +116,7 @@ class Mandelbrot {
     }
     
     point(xPos, yPos) {
-        let x0 = this.reScaleX(xPos)
+        let x0 = this.reScaleX(xPos);
         let y0 = this.reScaleY(yPos);
         let x = 0, y = 0;
         let i = 0;
@@ -150,7 +149,7 @@ class Mandelbrot {
             }
         }
         this.ctx.putImageData(result, 0, 0);
-        console.log(new Date() - start);
+        //console.log(new Date() - start);
         this.renderBtn.textContent = "Render " + (new Date() - start) + "ms";
     }
 
@@ -224,7 +223,7 @@ class Multibrot extends Mandelbrot {
     }
     
     point(xPos, yPos) {
-        let x0 = this.reScaleX(xPos)
+        let x0 = this.reScaleX(xPos);
         let y0 = this.reScaleY(yPos);
         let x = 0, y = 0;
         let i = 0;
@@ -242,7 +241,44 @@ class Multibrot extends Mandelbrot {
     }
 }
 
+class Julia extends Mandelbrot {
+    constructor(id, iter=255, width=512, height=512, minX=-2, minY=-1.5, maxX=1, maxY=1.5) {
+        super(id, iter, width, height, minX, minY, maxX, maxY);
+        this.posX = 0;
+        this.posY = 0;
+        
+        this.canvas.addEventListener("mousemove", this.mouseMove.bind(this));
+    }
+
+    mouseMove(event) {
+        this.posX = event.clientX - this.canvas.getBoundingClientRect().left;
+        this.posY = event.clientY - this.canvas.getBoundingClientRect().top;
+        this.render();
+    }
+
+    point(xPos, yPos) {
+        let zx = this.reScaleX(xPos);
+        let zy = this.reScaleY(yPos);
+        let cx = this.reScaleX(this.posX);
+        let cy = this.reScaleY(this.posY);
+        let i = 0;
+        let zx2 = zx*zx, zy2 = zy*zy;
+        while (zx2 + zy2 < 4 && i < this.iter) {
+            let xtmp = zx2 - zy2;
+            zy = 2*zx*zy + cy;
+            zx = xtmp + cx;
+            zx2 = zx*zx;
+            zy2 = zy*zy;
+            i++;
+        }
+        return i;
+    }
+}
+
 let fractalTree = new FractalTree("fractal-tree", 12, 0.75);
 let mandelbrot = new Mandelbrot("mandelbrot");
 let multibrot = new Multibrot("multibrot", 4);
+let juliaSet = new Julia("julia-set", 255, 512, 512, -2, -2, 2, 2);
+fractalTree.render();
 mandelbrot.render();
+juliaSet.render();
