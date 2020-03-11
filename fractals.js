@@ -143,76 +143,17 @@ class Mandelbrot {
                     let col = this.palette[Math.min(i, this.palette.length-1)]
                     result.data[px+1] = col;
                     result.data[px+2] = col;
-                    result.data[px+3] = 255;
-                }
-                px += 4;
-            }
-        }
-        this.ctx.putImageData(result, 0, 0);
-        //console.log(new Date() - start);
-        this.renderBtn.textContent = "Render " + (new Date() - start) + "ms";
-    }
-
-    preRender() {
-        let result = [];
-        let map = [];
-        this.iter = 3000;
-        //render a low-rez version
-        for (let yPos = 0; yPos < this.canvas.height; yPos += 16) {
-            let row = [];
-            for (let xPos = 0; xPos < this.canvas.width; xPos += 16) {
-                row.push(this.point(xPos, yPos));
-            }
-            result.push(row);
-            map.push(row);
-        }
-        // adjust iterations of regions based on neighbors
-        for (let y = 0; y < result.length; y++) {
-            for (let x = 0; x < result[0].length; x++) {
-                let mx = 0;
-                let fulls = 0;
-                for (let n = 0; n < 8; n++) {
-                    let xi = x + nx[n];
-                    let yi = y + ny[n];
-                    if (xi >= 0 && xi < result[0].length && yi >= 0 && yi < result.length) {
-                        mx = Math.max(mx, result[yi][xi]);
-                        if (result[yi][xi] == this.iter) {
-                            fulls++;
-                        }
-                    }
-                }
-                if (fulls == 8){
-                    map[y][x] = 1;
                 } else {
-                    map[y][x] = mx + 1;
+                    result.data[px] = 0;
+                    result.data[px+1] = 0;
+                    result.data[px+2] = 0;
                 }
-            }
-        }
-        return map;
-    }
-
-    testRender() {
-        let start = new Date();
-        let result = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-        let map = this.preRender();
-        
-        let px = 0;
-        for (let yPos = 0; yPos < this.canvas.height; yPos++) {
-            for (let xPos = 0; xPos < this.canvas.width; xPos++) {
-                
-                this.iter = map[Math.floor(yPos/16)][Math.floor(xPos/16)];
-                let i = this.point(xPos, yPos);
-                if (i != this.iter) {
-                    let col = this.palette[Math.min(i, this.palette.length-1)]
-                    result.data[px+1] = col;
-                    result.data[px+2] = col;
-                    result.data[px+3] = 255;
-                }
+                result.data[px+3] = 255;
                 px += 4;
             }
         }
         this.ctx.putImageData(result, 0, 0);
-        this.renderBtn2.textContent = "Render " + (new Date() - start) + "ms";
+        this.renderBtn.textContent = `Render ${new Date() - start}ms`;
     }
 }
 
@@ -247,13 +188,23 @@ class Julia extends Mandelbrot {
         this.posX = 0;
         this.posY = 0;
         
+        this.update = true;
+
         this.canvas.addEventListener("mousemove", this.mouseMove.bind(this));
+        this.canvas.addEventListener("mousedown", this.click.bind(this));
+    }
+
+    click(event) {
+        this.update = !this.update;
+        this.mouseMove(event);
     }
 
     mouseMove(event) {
-        this.posX = event.clientX - this.canvas.getBoundingClientRect().left;
-        this.posY = event.clientY - this.canvas.getBoundingClientRect().top;
-        this.render();
+        if (this.update) {
+            this.posX = event.clientX - this.canvas.getBoundingClientRect().left;
+            this.posY = event.clientY - this.canvas.getBoundingClientRect().top;
+            this.render();
+        }
     }
 
     point(xPos, yPos) {
@@ -278,7 +229,8 @@ class Julia extends Mandelbrot {
 let fractalTree = new FractalTree("fractal-tree", 12, 0.75);
 let mandelbrot = new Mandelbrot("mandelbrot");
 let multibrot = new Multibrot("multibrot", 4);
-let juliaSet = new Julia("julia-set", 255, 512, 512, -2, -2, 2, 2);
+let juliaSet = new Julia("julia-set", 256, 512, 512, -2, -2, 2, 2);
+
 fractalTree.render();
 mandelbrot.render();
 juliaSet.render();
