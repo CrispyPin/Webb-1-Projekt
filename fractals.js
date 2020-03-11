@@ -1,7 +1,5 @@
 'use strict'
 
-const nx = [-1, 0, 1, -1, 1, -1, 0, 1];
-const ny = [-1, -1, -1, 0, 0, 1, 1, 1];
 
 class FractalTree {
     constructor(id, iterations, mod) {

@@ -75,16 +75,19 @@ main {
 .controlbar {
     background-color: #222;
     padding: 2px 5px;
-    display: grid;
+    display: flex;
 
-    grid-template-columns: repeat(8, auto);
-    grid-gap: 4px;
+    justify-content: space-evenly;
+    align-content: stretch;
 }
 
 .controlbar button, .controlbar input{
     background-color: #6d6;
     padding: 4px 6px;
     border: 0;
+
+    flex-grow: 1;
+    margin: 2px;
 }
 
 .controlbar button:hover, .controlbar input:hover {
