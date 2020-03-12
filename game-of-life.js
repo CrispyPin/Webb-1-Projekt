@@ -87,7 +87,7 @@ class GameOfLife {
     
     render() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.fillStyle = "#db3";
+        this.ctx.fillStyle = "#084";
         for (let y = 0; y < this.worldHeight; y++) {
             for (let x = 0; x < this.worldWidth; x++) {
                 if (this.world[y][x]) {

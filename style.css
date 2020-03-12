@@ -79,6 +79,7 @@ main {
 
     justify-content: space-evenly;
     align-content: stretch;
+    flex-wrap: wrap;
 }
 
 .controlbar button, .controlbar input{
@@ -104,6 +105,16 @@ main {
     color: #000;
 }
 
+.controlbar .slider {
+    -webkit-appearance: none;
+    outline: none;
+    background: #333;
+    width: 20%;
+}
+
+.controlbar .play-button {
+    flex-basis: 35%;
+}
 
 .scrollback {
     position: fixed;

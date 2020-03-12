@@ -95,6 +95,11 @@ class Mandelbrot {
         this.palette = [16, 32, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248];
     }
     
+    setIter(x) {
+        this.maxIter = x;
+        this.render();
+    }
+
     init(minX, minY, maxX, maxY) {
         this.minX = minX;
         this.minY = minY;
@@ -156,7 +161,7 @@ class Mandelbrot {
 }
 
 class Multibrot extends Mandelbrot {
-    constructor(id, power, iter=255, width=512, height=512, minX=-2, minY=-1.5, maxX=1, maxY=1.5) {
+    constructor(id, power, iter=255, width=512, height=512, minX=-2, minY=-2, maxX=2, maxY=2) {
         super(id, iter, width, height, minX, minY, maxX, maxY);
         this.power = power;
     }
@@ -178,13 +183,18 @@ class Multibrot extends Mandelbrot {
         }
         return i;
     }
+
+    setPower(x) {
+        this.power = x;
+        this.render();
+    }
 }
 
 class Julia extends Mandelbrot {
-    constructor(id, iter=255, width=512, height=512, minX=-2, minY=-1.5, maxX=1, maxY=1.5) {
+    constructor(id, iter=255, width=512, height=512, minX=-2, minY=-2, maxX=2, maxY=2) {
         super(id, iter, width, height, minX, minY, maxX, maxY);
-        this.posX = 0;
-        this.posY = 0;
+        this.posX = width/2;
+        this.posY = height/3.2;
         
         this.update = true;
 
@@ -227,7 +237,7 @@ class Julia extends Mandelbrot {
 let fractalTree = new FractalTree("fractal-tree", 12, 0.75);
 let mandelbrot = new Mandelbrot("mandelbrot");
 let multibrot = new Multibrot("multibrot", 4);
-let juliaSet = new Julia("julia-set", 256, 512, 512, -2, -2, 2, 2);
+let juliaSet = new Julia("julia-set", 64, 512, 512);
 
 fractalTree.render();
 mandelbrot.render();
