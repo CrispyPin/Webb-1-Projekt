@@ -215,12 +215,19 @@ class Julia extends Mandelbrot {
         
         this.update = true;
 
+        this.canvas.removeEventListener("mousedown", this.zoom);
+        
+        this.canvas.addEventListener("mousedown", this.click.bind(this));
         this.canvas.addEventListener("mousemove", this.mouseMove.bind(this));
     }
 
     click(event) {
         this.update = !this.update;
         this.mouseMove(event);
+    }
+
+    zoom() {
+        return;
     }
 
     mouseMove(event) {
