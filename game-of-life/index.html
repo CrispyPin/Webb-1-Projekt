@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conways Game of Life - CrispyPin.com</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <a href=".." id="logo"><img src="../logo.png" alt=""></a>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="..">Home</a></li>
+            <li><a href="../noise">Noise</a></li>
+            <li><a href="../fractals">Fractals</a></li>
+            <li><a href="../game-of-life">Game of Life</a></li>
+            <li><a href="../evolution">Evolution</a></li>
+            <li><a href="https://crispypin.itch.io/">Games</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Game of Life</h1>
+        <p>Cellular Automata, blablabla</p>
+        <div class="visual" id="game-of-life">
+            <canvas></canvas>
+            <div class="controlbar">
+                <button type="button" onclick="gameOfLife.toggleRunning()" class="play-button">Play</button>
+                <button type="button" onclick="gameOfLife.step()" class="step-button">Step</button>
+                <button type="button" onclick="gameOfLife.slowDown()">&lt;&lt;</button>
+                <button type="button" onclick="gameOfLife.speedUp()">&gt;&gt;</button>
+                <button type="button" onclick="gameOfLife.clearWorld()">clear</button>
+                <button type="button" onclick="gameOfLife.randomizeWorld()">randomize</button>
+            </div>
+        </div>
+        <div class="visual" id="game-of-life-advanced">
+            <canvas></canvas>
+            <div class="controlbar">
+                <button type="button" class="play-button" onclick="gameOfLifeAdvanced.toggleRunning()" class="play-button">Play</button>
+                <button type="button" onclick="gameOfLifeAdvanced.step()" class="step-button">Step</button>
+                <button type="button" onclick="gameOfLifeAdvanced.slowDown()">&lt;&lt;</button>
+                <button type="button" onclick="gameOfLifeAdvanced.speedUp()">&gt;&gt;</button>
+                <button type="button" onclick="gameOfLifeAdvanced.clearWorld()">clear</button>
+                <button type="button" onclick="gameOfLifeAdvanced.randomizeWorld()">randomize</button>
+                
+                <label class="slider-label" for="min-alive">Min/Stay: 2</label>
+                <input type="range" autocomplete="off" class="slider" id="min-alive" min=0 max=8 value=2 onchange="gameOfLifeAdvanced.setMinA(value)">
+                <label class="slider-label" for="min-dead">Min/Born: 3</label>
+                <input type="range" autocomplete="off" class="slider" id="min-dead" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMinD(value)">
+                <label class="slider-label" for="max-alive">Max/Stay: 3</label>
+                <input type="range" autocomplete="off" class="slider" id="max-alive" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMaxA(value)">
+                <label class="slider-label" for="max-dead">Max/Born: 3</label>
+                <input type="range" autocomplete="off" class="slider" id="max-dead" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMaxD(value)">
+            </div>
+        </div>
+        <script src="game-of-life.js"></script>
+    </main>
+    <footer>Chicken chicken chicken chicken, chicken chicken chicken.</footer>
+    <div class="scrollback" onclick="window.scrollTo(0,0)"></div>
+</body>
+</html>
