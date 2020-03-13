@@ -43,14 +43,15 @@
                 <button type="button" onclick="gameOfLifeAdvanced.speedUp()">&gt;&gt;</button>
                 <button type="button" onclick="gameOfLifeAdvanced.clearWorld()">clear</button>
                 <button type="button" onclick="gameOfLifeAdvanced.randomizeWorld()">randomize</button>
-                <label for="min-alive">Min - Stay alive</label>
-                <input type="range" class="slider" id="min-alive" min=0 max=8 value=2 onchange="gameOfLifeAdvanced.setMinA(value)">
-                <label for="max-alive">Max - Stay alive</label>
-                <input type="range" class="slider" id="max-alive" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMaxA(value)">
-                <label for="min-dead">Min - Born</label>
-                <input type="range" class="slider" id="min-dead" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMinD(value)">
-                <label for="max-dead">Max - Born</label>
-                <input type="range" class="slider" id="max-dead" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMaxD(value)">
+                
+                <label class="slider-label" for="min-alive">Min/Stay: 2</label>
+                <input type="range" autocomplete="off" class="slider" id="min-alive" min=0 max=8 value=2 onchange="gameOfLifeAdvanced.setMinA(value)">
+                <label class="slider-label" for="min-dead">Min/Born: 3</label>
+                <input type="range" autocomplete="off" class="slider" id="min-dead" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMinD(value)">
+                <label class="slider-label" for="max-alive">Max/Stay: 3</label>
+                <input type="range" autocomplete="off" class="slider" id="max-alive" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMaxA(value)">
+                <label class="slider-label" for="max-dead">Max/Born: 3</label>
+                <input type="range" autocomplete="off" class="slider" id="max-dead" min=0 max=8 value=3 onchange="gameOfLifeAdvanced.setMaxD(value)">
             </div>
         </div>
         <script src="game-of-life.js"></script>

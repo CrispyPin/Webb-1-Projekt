@@ -16,6 +16,15 @@ class GameOfLife {
         
         this.playBtn = this.app.getElementsByClassName("play-button")[0];
         this.stepBtn = this.app.getElementsByClassName("step-button")[0];
+        this.minASlider = this.app.getElementsByClassName("slider")[0];
+        this.minDSlider = this.app.getElementsByClassName("slider")[1];
+        this.maxASlider = this.app.getElementsByClassName("slider")[2];
+        this.maxDSlider = this.app.getElementsByClassName("slider")[3];
+
+        this.minALabel = this.app.getElementsByClassName("slider-label")[0];
+        this.minDLabel = this.app.getElementsByClassName("slider-label")[1];
+        this.maxALabel = this.app.getElementsByClassName("slider-label")[2];
+        this.maxDLabel = this.app.getElementsByClassName("slider-label")[3];
 
         this.run = this.run.bind(this);
         
@@ -178,15 +187,35 @@ class GameOfLife {
 
     setMinA(x) {
         this.rule[0] = x;
+        if (this.rule[1] < x) {
+            this.rule[0] = this.rule[1];
+            this.minASlider.value = this.rule[1];
+        }
+        this.minALabel.textContent = "Min/Stay: " + this.rule[0];
     }
     setMaxA(x) {
         this.rule[1] = x;
+        if (this.rule[0] > x) {
+            this.rule[1] = this.rule[0];
+            this.maxASlider.value = this.rule[0];
+        }
+        this.maxALabel.textContent = "Max/Stay: " + this.rule[1];
     }
     setMinD(x) {
         this.rule[2] = x;
+        if (this.rule[3] < x) {
+            this.rule[2] = this.rule[3];
+            this.minDSlider.value = this.rule[2];
+        }
+        this.minDLabel.textContent = "Min/Born: " + this.rule[2];
     }
     setMaxD(x) {
         this.rule[3] = x;
+        if (this.rule[2] > x) {
+            this.rule[3] = this.rule[2];
+            this.maxDSlider.value = this.rule[2];
+        }
+        this.maxDLabel.textContent = "Max/Born: " + this.rule[3];
     }
 }
 

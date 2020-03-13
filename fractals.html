@@ -37,7 +37,7 @@
         <div class="visual" id="mandelbrot">
             <canvas></canvas>
             <div class="controlbar">
-                <button type="button" onclick="mandelbrot.render()">Render</button>
+                <button type="button" onclick="mandelbrot.reset()">Reset</button>
                 <input type="number" min=1 max=1000 value=256 onchange="mandelbrot.setIter(value)">
             </div>
         </div>
@@ -46,7 +46,7 @@
         <div class="visual" id="multibrot">
             <canvas></canvas>
             <div class="controlbar">
-                <button type="button" onclick="multibrot.render()">Render</button>
+                <button type="button" onclick="multibrot.reset()">Reset</button>
                 <input type="number" min=1 max=1000 value=256 onchange="multibrot.setIter(value)">
                 <input type="number" min=0 max=32 step=0.1 value=4 onchange="multibrot.setPower(value)">
             </div>
@@ -56,8 +56,8 @@
         <div class="visual" id="julia-set">
             <canvas></canvas>
             <div class="controlbar">
-                <button type="button" onclick="juliaSet.render()">Render</button>
-                <input type="number" min=2 max=1000 value=64 onchange="juliaSet.setIter(value)">
+                <button type="button" onclick="juliaSet.reset()">Reset</button>
+                <input type="number" min=8 max=1000 value=80 step=8 onchange="juliaSet.setIter(value)">
             </div>
         </div>
         <script src="fractals.js"></script>

@@ -89,10 +89,29 @@ class Mandelbrot {
         this.renderBtn2 = this.app.getElementsByClassName("controlbar")[0].getElementsByTagName("button")[1];
         
         this.init(minX, minY, maxX, maxY);
+        this.defaultZoom = [minX, minY, maxX, maxY];
         this.iter = iter;
         this.maxIter = iter;
         
         this.palette = [16, 32, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248];
+
+        this.canvas.addEventListener("mousedown", this.zoom.bind(this));
+    }
+
+    zoom(event) {
+        //zoom function
+        let zoomf = 8;
+        let x = this.reScaleX(event.clientX - this.canvas.getBoundingClientRect().left);
+        let y = this.reScaleY(event.clientY - this.canvas.getBoundingClientRect().top);
+        let dx = (this.maxX - this.minX)/zoomf;
+        let dy = (this.maxY - this.minY)/zoomf;
+        this.init(x - dx, y - dy, x + dx, y + dy);
+        this.render();
+    }
+
+    reset() {
+        this.init(this.defaultZoom[0], this.defaultZoom[1], this.defaultZoom[2], this.defaultZoom[3]);
+        this.render();
     }
     
     setIter(x) {
@@ -118,9 +137,7 @@ class Mandelbrot {
         return y * this.scaleY + this.minY;
     }
     
-    point(xPos, yPos) {
-        let x0 = this.reScaleX(xPos);
-        let y0 = this.reScaleY(yPos);
+    point(x0, y0) {
         let x = 0, y = 0;
         let i = 0;
         let x2 = 0, y2 = 0;
@@ -139,9 +156,11 @@ class Mandelbrot {
         let start = new Date();
         let result = this.ctx.getImageData(0,0, this.canvas.width, this.canvas.height);
         let px = 0;
+        let yp;
         for (let yPos = 0; yPos < this.canvas.height; yPos++) {
+            yp = this.reScaleY(yPos);
             for (let xPos = 0; xPos < this.canvas.width; xPos++) {
-                let i = this.point(xPos, yPos);
+                let i = this.point(this.reScaleX(xPos), yp);
                 if (i != this.iter) {
                     let col = this.palette[Math.min(i, this.palette.length-1)]
                     result.data[px+1] = col;
@@ -156,7 +175,7 @@ class Mandelbrot {
             }
         }
         this.ctx.putImageData(result, 0, 0);
-        this.renderBtn.textContent = `Render ${new Date() - start}ms`;
+        this.renderBtn.textContent = `Reset ${new Date() - start}ms`;
     }
 }
 
@@ -166,9 +185,7 @@ class Multibrot extends Mandelbrot {
         this.power = power;
     }
     
-    point(xPos, yPos) {
-        let x0 = this.reScaleX(xPos);
-        let y0 = this.reScaleY(yPos);
+    point(x0, y0) {
         let x = 0, y = 0;
         let i = 0;
         let xtmp, xxyyn, atn;
@@ -193,13 +210,12 @@ class Multibrot extends Mandelbrot {
 class Julia extends Mandelbrot {
     constructor(id, iter=255, width=512, height=512, minX=-2, minY=-2, maxX=2, maxY=2) {
         super(id, iter, width, height, minX, minY, maxX, maxY);
-        this.posX = width/2;
-        this.posY = height/3.2;
+        this.cx = this.reScaleX(width/2);
+        this.cy = this.reScaleY(height/3.2);
         
         this.update = true;
 
         this.canvas.addEventListener("mousemove", this.mouseMove.bind(this));
-        this.canvas.addEventListener("mousedown", this.click.bind(this));
     }
 
     click(event) {
@@ -209,23 +225,19 @@ class Julia extends Mandelbrot {
 
     mouseMove(event) {
         if (this.update) {
-            this.posX = event.clientX - this.canvas.getBoundingClientRect().left;
-            this.posY = event.clientY - this.canvas.getBoundingClientRect().top;
+            this.cx = this.reScaleX(event.clientX - this.canvas.getBoundingClientRect().left);
+            this.cy = this.reScaleY(event.clientY - this.canvas.getBoundingClientRect().top);
             this.render();
         }
     }
 
-    point(xPos, yPos) {
-        let zx = this.reScaleX(xPos);
-        let zy = this.reScaleY(yPos);
-        let cx = this.reScaleX(this.posX);
-        let cy = this.reScaleY(this.posY);
-        let i = 0;
+    point(zx, zy) {
+        let i = 0, xtmp = 0;
         let zx2 = zx*zx, zy2 = zy*zy;
         while (zx2 + zy2 < 4 && i < this.iter) {
-            let xtmp = zx2 - zy2;
-            zy = 2*zx*zy + cy;
-            zx = xtmp + cx;
+            xtmp = zx2 - zy2;
+            zy = 2*zx*zy + this.cy;
+            zx = xtmp + this.cx;
             zx2 = zx*zx;
             zy2 = zy*zy;
             i++;
