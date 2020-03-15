@@ -15,7 +15,7 @@ class Evolution {
         this.restart();
 
         this.sinceFood = 0;
-        this.foodDelay = 120;
+        this.foodDelay = 180;
     }
 
     restart() {
@@ -164,7 +164,7 @@ class Agent {
         this.posY += 0.02 * this.genes.speed * Math.sin(this.direction);
         this.posY = (this.worldY + this.posY) % this.worldY;
 
-        this.energy -= (0.02*this.genes.speed)**2/100 + this.genes.sight/200 + 0.01;
+        this.energy -= (0.02*this.genes.speed)**2/100 + this.genes.sight/1000 + 0.01;
     }
     
     updateFood(closestFood, dist) {
@@ -177,8 +177,6 @@ class Agent {
             return true;
         }
         this.direction = Math.PI/2 + Math.atan2(Math.abs(this.posX - closestFood.x), Math.abs(this.posY - closestFood.y));
-        //console.log(this.direction);
-        
     }
     
     updateChild() {
