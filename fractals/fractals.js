@@ -1,5 +1,6 @@
 'use strict'
 
+const gpu = new GPU();
 
 class FractalTree {
     constructor(id, iterations, mod) {
@@ -175,6 +176,36 @@ class Mandelbrot {
             }
         }
         this.ctx.putImageData(result, 0, 0);
+        this.renderBtn.textContent = `Reset ${new Date() - start}ms`;
+    }
+
+    gpuRender() {
+        let start = new Date();
+        const kernel = gpu.createKernel(function(scaleX, scaleY, minX, minY, iter) {
+            let x0 = this.thread.x * scaleX + minX;
+            let y0 = this.thread.y * scaleY + minY;
+            //let i = 0;
+            let x2 = 0;
+            let y2 = 0;
+            
+            for (let i = 0; i < iter; i++) {
+                y = 2*x*y + y0;
+                x = x2 - y2 + x0;
+                x2 = x*x;
+                y2 = y*y;
+                if (x2+y2 >= 4) {
+                    break;
+                }
+            }
+            //while (x2+y2 < 4 && i < iter) {
+            //    y = 2*x*y + y0;
+            //    x = x2 - y2 + x0;
+            //    x2 = x*x;
+            //    y2 = y*y;
+            //    i++;}
+            return i;
+        }).setOutput([512, 512]);
+        kernel(this.scaleX, this.scaleY, this.minX, this.minY, this.maxIter);
         this.renderBtn.textContent = `Reset ${new Date() - start}ms`;
     }
 }
