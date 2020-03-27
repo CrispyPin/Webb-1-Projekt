@@ -38,6 +38,7 @@
             <canvas></canvas>
             <div class="controlbar">
                 <button type="button" onclick="mandelbrot.reset()">Reset</button>
+                <button type="button" onclick="mandelbrot.gpuRender()">GPU</button>
                 <input type="number" min=1 max=1000 value=256 onchange="mandelbrot.setIter(value)">
             </div>
         </div>

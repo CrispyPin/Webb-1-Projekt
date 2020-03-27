@@ -92,7 +92,6 @@ class Mandelbrot {
         this.init(minX, minY, maxX, maxY);
         this.defaultZoom = [minX, minY, maxX, maxY];
         this.iter = iter;
-        this.maxIter = iter;
         
         this.palette = [16, 32, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248];
 
@@ -116,7 +115,7 @@ class Mandelbrot {
     }
     
     setIter(x) {
-        this.maxIter = x;
+        this.iter = x;
         this.render();
     }
 
@@ -142,7 +141,7 @@ class Mandelbrot {
         let x = 0, y = 0;
         let i = 0;
         let x2 = 0, y2 = 0;
-        while (x2+y2 <= 4 && i < this.iter) {
+        while (x2 + y2 <= 4 && i < this.iter) {
             y = 2*x*y + y0;
             x = x2 - y2 + x0;
             x2 = x*x;
@@ -153,7 +152,6 @@ class Mandelbrot {
     }
     
     render() {
-        this.iter = this.maxIter;
         let start = new Date();
         let result = this.ctx.getImageData(0,0, this.canvas.width, this.canvas.height);
         let px = 0;
@@ -164,6 +162,7 @@ class Mandelbrot {
                 let i = this.point(this.reScaleX(xPos), yp);
                 if (i != this.iter) {
                     let col = this.palette[Math.min(i, this.palette.length-1)]
+                    result.data[px] = 0;
                     result.data[px+1] = col;
                     result.data[px+2] = col;
                 } else {
@@ -181,31 +180,38 @@ class Mandelbrot {
 
     gpuRender() {
         let start = new Date();
-        const kernel = gpu.createKernel(function(scaleX, scaleY, minX, minY, iter) {
+
+        let kernel = gpu.createKernel(function(scaleX, scaleY, minX, minY, iter) {
             let x0 = this.thread.x * scaleX + minX;
             let y0 = this.thread.y * scaleY + minY;
-            //let i = 0;
-            let x2 = 0;
-            let y2 = 0;
-            
-            for (let i = 0; i < iter; i++) {
+            let x = 0, y = 0;
+            let i = 0;
+            let x2 = 0, y2 = 0;
+
+            while (x2 + y2 < 4 && i < iter) {
                 y = 2*x*y + y0;
                 x = x2 - y2 + x0;
                 x2 = x*x;
                 y2 = y*y;
-                if (x2+y2 >= 4) {
-                    break;
-                }
+                i++;
             }
-            //while (x2+y2 < 4 && i < iter) {
-            //    y = 2*x*y + y0;
-            //    x = x2 - y2 + x0;
-            //    x2 = x*x;
-            //    y2 = y*y;
-            //    i++;}
-            return i;
-        }).setOutput([512, 512]);
-        kernel(this.scaleX, this.scaleY, this.minX, this.minY, this.maxIter);
+            if (i != iter) {
+                this.color(0, i/iter, i/iter, 1);
+            } else {
+                this.color(0, 0, 0, 1);
+            }
+            //this.color(this.thread.x/512, this.thread.y/512, i/256);
+            //this.color(x0, y0, 0, 1)
+        },
+        {output:[512, 512], graphical:true, loopMaxIterations: this.iter});
+        
+        kernel(this.scaleX, this.scaleY, this.minX, this.minY, this.iter);
+
+        //let kernel = gpu.createKernel(function() {this.color(0, 0, 1);}).setOutput([512, 512]).setGraphical(true);
+        //kernel();
+
+        let result = kernel.getPixels();
+        this.ctx.putImageData(new ImageData(result, 512, 512), 0, 0);
         this.renderBtn.textContent = `Reset ${new Date() - start}ms`;
     }
 }
