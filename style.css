@@ -33,7 +33,6 @@ nav {
 nav ul {
     list-style-type: none;
     margin: 0;
-    padding: 0;
     display: grid;
     padding: 5px 25px;
     grid-gap: 5px;
