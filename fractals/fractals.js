@@ -197,9 +197,11 @@ class Mandelbrot {
             }
             if (i != iter) {
                 this.color(0, i/iter, i/iter, 1);
-                this.color(0, i/255, i/255, 1);//i is float? = 0.1
+                this.color(0, i/255, i/255, 1);//i is 0?
+                this.color(this.thread.x/512, this.thread.y/512, i/255);
+                
             } else {
-                this.color(0, 0, 0, 1);
+                this.color(1, 0, 0, 1);
             }
             //this.color(this.thread.x/512, this.thread.y/512, i/256);
             //this.color(x0, y0, 0, 1)
